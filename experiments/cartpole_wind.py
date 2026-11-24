@@ -116,11 +116,12 @@ class RewardShapingWrapper(Wrapper):
         reward = self.modify_reward(observation, reward)
         return observation, reward, terminated, truncated, info
 
-    def modify_reward(self, observation, reward):
+    def modify_reward(self, observation, reward, pos_weight=0.1):
         # Define custom reward modification logic
         # For example, add a penalty if the pole angle is too high
+        pos = observation[0]
         pole_angle = observation[2]
-        reward = np.cos(pole_angle)
+        reward = float(np.cos(pole_angle) - pos_weight*np.abs(pos))
         return reward
 
 
